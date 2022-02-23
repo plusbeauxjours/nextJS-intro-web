@@ -1,8 +1,21 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import NavBar from "../components/NavBar";
+import { NextComponentType, NextPageContext } from "next";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+interface IProps {
+  Component: NextComponentType<NextPageContext, any, {}>;
+  pageProps: any;
 }
 
-export default MyApp
+const MyApp = ({ Component, pageProps }: AppProps) => {
+  console.log(Component, pageProps);
+  return (
+    <>
+      <NavBar />
+      <Component {...pageProps} />
+    </>
+  );
+};
+
+export default MyApp;
