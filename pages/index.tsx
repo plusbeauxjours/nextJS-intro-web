@@ -1,9 +1,14 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
+import React from "react";
 import { useQuery } from "react-query";
 
 import styled from "styled-components";
 import Seo from "../components/Seo";
 import { getMovies, IGetMoviesResult } from "./api/api";
+
+interface IProps {
+  results: IGetMoviesResult;
+}
 
 const Container = styled.div`
   display: grid;
@@ -27,17 +32,11 @@ const MovieText = styled.h4`
   text-align: center;
 `;
 
-const Home: NextPage = () => {
-  const { data, isLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "nowPlaying"],
-    getMovies
-  );
-  console.log(data?.results);
+const Home: NextPage<IProps> = ({ results }) => {
   return (
     <Container>
       <Seo title="Home" />
-      {isLoading && <h4>Loading...</h4>}
-      {data?.results?.map((movie) => (
+      {results?.map((movie) => (
         <div className="movie" key={movie.id}>
           <MovieImg
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
@@ -50,3 +49,15 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+// 서버에서 실행된다.
+export async function getServerSideProps({}: GetServerSideProps) {
+  const { results } = await (
+    await fetch(`http://localhost:3000/api/movies`)
+  ).json();
+  return {
+    props: {
+      results,
+    },
+  };
+}
