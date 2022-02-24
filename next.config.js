@@ -5,9 +5,9 @@ module.exports = {
   async redirects() {
     return [
       {
-        source: "/old-blog/:path*",
-        destination: "/new-sexy-blog/:path*",
-        permanent: false,
+        source: "/contact/:path*",
+        destination: "/form/:path*",
+        permanent: false, // true일경우에는 브라우저나 검색엔진이 이 정보를 기억한다.
       },
     ];
   },
@@ -15,7 +15,7 @@ module.exports = {
     return [
       {
         source: "/api/movies",
-        destination: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`,
+        destination: `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}`,
       },
     ];
   },

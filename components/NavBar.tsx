@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-
+import Image from "next/image";
 interface IActive {
   isActive: boolean;
 }
 
-const Img = styled.img`
+const Img = styled(Image)`
   max-width: 100px;
   margin-bottom: 5px;
 `;
@@ -37,7 +37,7 @@ export default function NavBar() {
   const router = useRouter();
   return (
     <Nav>
-      <Img src="/vercel.svg" />
+      <Img src="/vercel.svg" width={100} height={100} />
       <Row>
         <Link href="/">
           <A isActive={router.pathname === "/"}>Home</A>

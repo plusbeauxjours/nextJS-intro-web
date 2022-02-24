@@ -32,7 +32,7 @@ const Home: NextPage = () => {
     ["movies", "nowPlaying"],
     getMovies
   );
-
+  console.log(data?.results);
   return (
     <Container>
       <Seo title="Home" />
