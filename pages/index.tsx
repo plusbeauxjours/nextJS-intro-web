@@ -1,13 +1,13 @@
+import Link from "next/link";
 import type { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import React from "react";
-import { useQuery } from "react-query";
 
 import styled from "styled-components";
 import Seo from "../components/Seo";
-import { getMovies, IGetMoviesResult } from "./api/api";
 
 interface IProps {
-  results: IGetMoviesResult;
+  results: any;
 }
 
 const Container = styled.div`
@@ -27,22 +27,54 @@ const MovieImg = styled.img`
   }
 `;
 
+const Movie = styled.div`
+  cursor: pointer;
+`;
+
 const MovieText = styled.h4`
   font-size: 18px;
   text-align: center;
 `;
 
 const Home: NextPage<IProps> = ({ results }) => {
+  const router = useRouter();
+  const onClick = (id, title) => {
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: {
+          title,
+        },
+      },
+      `/movies/${id}`
+    );
+  };
+
   return (
     <Container>
       <Seo title="Home" />
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
+        <Movie
+          onClick={() => onClick(movie.id, movie.original_title)}
+          key={movie.id}
+        >
           <MovieImg
             src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
           />
-          <MovieText>{movie.title}</MovieText>
-        </div>
+          <MovieText>
+            <Link
+              href={{
+                pathname: `/movies/${movie.id}`,
+                query: {
+                  title: movie.original_title,
+                },
+              }}
+              as={`/movies/${movie.id}`}
+            >
+              <a>{movie.title}</a>
+            </Link>
+          </MovieText>
+        </Movie>
       ))}
     </Container>
   );
